@@ -55,7 +55,9 @@ class Mipiace extends BaseHandler {
                 $attachement = Attachment::create();
                 $attachement->setImageUrl(FacebookClient::BASE_GRAPH_URL . '/' . $objectId . '/picture');
 
-                return $this->respondToSlack($post['message'])->withAttachment($attachement);
+                return $this->respondToSlack($post['message'])
+                            ->withAttachment($attachement)
+                            ->displayResponseToEveryoneOnChannel();
             }
         } catch (\Facebook\Exceptions\FacebookSDKException $e) {
             return $this->respondToSlack("Euuuh erreur erreur erreur!");

@@ -38,11 +38,9 @@ class Mipiace extends BaseHandler {
      * @return \Spatie\SlashCommand\Response
      */
     public function handle(Request $request): Response {
-        Carbon::setLocale('fr');
         $facebook    = App::make('SammyK\LaravelFacebookSdk\LaravelFacebookSdk');
         $fbToken     = $this->getFacebookToken();
         $currentDate = Carbon::now();
-        $currentDate = mb_strtolower($currentDate->formatLocalized('%A %d %B %Y'));
 
         try {
             $response = $facebook->get('/' . self::MI_PIACE_FACEBOOK_PAGE_ID . '/posts', $fbToken);
@@ -53,7 +51,15 @@ class Mipiace extends BaseHandler {
                     continue;
                 }
 
-                if (strpos($post['message'], $currentDate) === false) {
+                if (strpos($post['message'], 'plats du jour') === false) {
+                    continue;
+                }
+
+                if (strpos($post['message'], $currentDate->day) === false) {
+                    continue;
+                }
+
+                if (strpos($post['message'], $currentDate->year) === false) {
                     continue;
                 }
 

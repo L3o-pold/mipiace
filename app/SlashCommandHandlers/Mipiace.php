@@ -77,7 +77,8 @@ class Mipiace extends BaseHandler {
             return $this->respondToSlack("Euuuh erreur erreur erreur!");
         }
 
-        return $this->respondToSlack("Menu du jour pas encore publié!");
+        return $this->respondToSlack("Menu du jour pas encore publié!")
+                    ->displayResponseToEveryoneOnChannel();
     }
 
     /**

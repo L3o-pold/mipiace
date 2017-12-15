@@ -3,6 +3,7 @@
 namespace App\SlashCommandHandlers;
 
 use App;
+use Carbon\Carbon;
 use Facebook\FacebookClient;
 use Spatie\SlashCommand\Attachment;
 use Spatie\SlashCommand\Handlers\BaseHandler;
@@ -37,15 +38,22 @@ class Mipiace extends BaseHandler {
      * @return \Spatie\SlashCommand\Response
      */
     public function handle(Request $request): Response {
-        $facebook = App::make('SammyK\LaravelFacebookSdk\LaravelFacebookSdk');
-        $fbToken  = $this->getFacebookToken();
+        Carbon::setLocale('fr');
+        $facebook    = App::make('SammyK\LaravelFacebookSdk\LaravelFacebookSdk');
+        $fbToken     = $this->getFacebookToken();
+        $currentDate = Carbon::now();
+        $currentDate = mb_strtolower($currentDate->formatLocalized('%A %d %B %Y'));
 
         try {
             $response = $facebook->get('/' . self::MI_PIACE_FACEBOOK_PAGE_ID . '/posts', $fbToken);
             $edge     = $response->getGraphEdge();
 
             foreach ($edge->asArray() as $post) {
-                if (strpos($post['message'], 'plats du jour') === false) {
+                if (!isset($post['message'])) {
+                    continue;
+                }
+
+                if (strpos($post['message'], $currentDate) === false) {
                     continue;
                 }
 
@@ -63,7 +71,7 @@ class Mipiace extends BaseHandler {
             return $this->respondToSlack("Euuuh erreur erreur erreur!");
         }
 
-        return $this->respondToSlack("Aucun plat du jour trouvé?!");
+        return $this->respondToSlack("Menu du jour pas encore publié!");
     }
 
     /**

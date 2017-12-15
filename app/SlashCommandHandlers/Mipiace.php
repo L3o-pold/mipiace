@@ -50,16 +50,16 @@ class Mipiace extends BaseHandler {
                 if (!isset($post['message'])) {
                     continue;
                 }
-
+                
                 if (strpos($post['message'], 'plats du jour') === false) {
                     continue;
                 }
 
-                if (strpos($post['message'], $currentDate->day) === false) {
+                if (strpos($post['message'], (string) $currentDate->day) === false) {
                     continue;
                 }
 
-                if (strpos($post['message'], $currentDate->year) === false) {
+                if (strpos($post['message'], (string) $currentDate->year) === false) {
                     continue;
                 }
 

@@ -46,16 +46,22 @@ class Mipiace extends BaseHandler {
             $response = $facebook->get('/' . self::MI_PIACE_FACEBOOK_PAGE_ID . '/posts', $fbToken);
             $edge     = $response->getGraphEdge();
 
+            setlocale(LC_TIME, "fr_FR");
+
             foreach ($edge->asArray() as $post) {
                 if (!isset($post['message'])) {
                     continue;
                 }
-                
-                if (strpos($post['message'], 'plats du jour') === false) {
+
+                if (strpos($post['message'], (string) $currentDate->day) === false) {
                     continue;
                 }
 
-                if (strpos($post['message'], (string) $currentDate->day) === false) {
+                if (strpos($post['message'], strftime('%A', $currentDate->getTimestamp())) === false) {
+                    continue;
+                }
+
+                if (strpos($post['message'], utf8_encode(strftime('%B', $currentDate->getTimestamp()))) === false) {
                     continue;
                 }
 
@@ -77,7 +83,7 @@ class Mipiace extends BaseHandler {
             return $this->respondToSlack("Euuuh erreur erreur erreur!");
         }
 
-        return $this->respondToSlack("Menu du jour pas encore publié!")
+        return $this->respondToSlack("Menu du jour pas encore publié! https://www.facebook.com/Mi-Piace-Restaurant-Gen%C3%A8ve-896229970508805")
                     ->displayResponseToEveryoneOnChannel();
     }
 

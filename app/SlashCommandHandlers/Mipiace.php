@@ -52,20 +52,20 @@ class Mipiace extends BaseHandler {
                 if (!isset($post['message'])) {
                     continue;
                 }
-
-                if (strpos($post['message'], (string) $currentDate->day) === false) {
+                
+                if (stripos($post['message'], (string) $currentDate->day) === false) {
                     continue;
                 }
 
-                if (strpos($post['message'], strftime('%A', $currentDate->getTimestamp())) === false) {
+                if (stripos($post['message'], strftime('%A', $currentDate->getTimestamp())) === false) {
                     continue;
                 }
 
-                if (strpos($post['message'], utf8_encode(strftime('%B', $currentDate->getTimestamp()))) === false) {
+                if (stripos($post['message'], utf8_encode(strftime('%B', $currentDate->getTimestamp()))) === false) {
                     continue;
                 }
 
-                if (strpos($post['message'], (string) $currentDate->year) === false) {
+                if (stripos($post['message'], (string) $currentDate->year) === false) {
                     continue;
                 }
 

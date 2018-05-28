@@ -47,12 +47,12 @@ class Mipiace extends BaseHandler {
             $edge     = $response->getGraphEdge();
 
             setlocale(LC_TIME, "fr_FR");
-
+            
             foreach ($edge->asArray() as $post) {
                 if (!isset($post['message'])) {
                     continue;
                 }
-                
+
                 if (stripos($post['message'], (string) $currentDate->day) === false) {
                     continue;
                 }
@@ -62,10 +62,6 @@ class Mipiace extends BaseHandler {
                 }
 
                 if (stripos($post['message'], utf8_encode(strftime('%B', $currentDate->getTimestamp()))) === false) {
-                    continue;
-                }
-
-                if (stripos($post['message'], (string) $currentDate->year) === false) {
                     continue;
                 }
 

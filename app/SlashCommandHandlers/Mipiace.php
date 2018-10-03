@@ -5,6 +5,7 @@ namespace App\SlashCommandHandlers;
 use App;
 use Carbon\Carbon;
 use Facebook\FacebookClient;
+use Illuminate\Support\Facades\Log;
 use Spatie\SlashCommand\Attachment;
 use Spatie\SlashCommand\Handlers\BaseHandler;
 use Spatie\SlashCommand\Request;
@@ -75,7 +76,8 @@ class Mipiace extends BaseHandler {
                             ->withAttachment($attachement)
                             ->displayResponseToEveryoneOnChannel();
             }
-        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
+        } catch (\Exception $e) {
+            Log::debug($e);
             return $this->respondToSlack("Euuuh erreur erreur erreur!");
         }
 
